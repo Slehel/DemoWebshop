@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
-
+import { HttpClientService } from 'src/app/service/http-client.service';
 
 @Component({
   selector: 'app-users',
@@ -11,25 +11,16 @@ export class UsersComponent implements OnInit {
 
   users: Array<User> = [];
 
-  constructor() { }
+  constructor(private httpClientService: HttpClientService) { }
 
   ngOnInit() {
-    this.users = new Array<User>();
+      this.httpClientService.getUsers().subscribe(
+        response => this.handleSuccessfulResponse(response),
+      );
+    }
 
-    const user1 = new User();
-    user1.id = 1;
-    user1.username = 'user1';
-    user1.type = 'admin';
-    user1.password = 'pass';
-
-    const user2 = new User();
-    user2.id = 2;
-    user2.username = 'user2';
-    user2.type = 'user';
-    user2.password = 'pass';
-
-    this.users.push(user1);
-    this.users.push(user2);
-  }
+    handleSuccessfulResponse(response: any) {
+      this.users = response;
+    }
 
 }
