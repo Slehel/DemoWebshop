@@ -26,6 +26,13 @@ public class UserController {
         userRepository.save(user);
     }
 
+    @DeleteMapping(path = { "/{id}" })
+    public User deleteUser(@PathVariable("id") long id) {
+        User user = userRepository.getOne(id);
+        userRepository.deleteById(id);
+        return user;
+    }
+
 
 
 }
