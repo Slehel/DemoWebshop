@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
-
+import { HttpClientService } from 'src/app/service/http-client.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -10,26 +11,44 @@ import { User } from 'src/app/model/user';
 export class UsersComponent implements OnInit {
 
   users: Array<User> = [];
+  selectedUser!: User;
+  action!: string;
 
-  constructor() { }
+  constructor(private httpClientService: HttpClientService,
+      private router: Router,
+      private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.users = new Array<User>();
+     this.refreshData();
+    }
 
-    const user1 = new User();
-    user1.id = 1;
-    user1.username = 'user1';
-    user1.type = 'admin';
-    user1.password = 'pass';
+    refreshData() {
+      this.httpClientService.getUsers().subscribe(
+        response => this.handleSuccessfulResponse(response),
+      );
 
-    const user2 = new User();
-    user2.id = 2;
-    user2.username = 'user2';
-    user2.type = 'user';
-    user2.password = 'pass';
+      this.activatedRoute.queryParams.subscribe(
+        (params) => {
+          this.action = params['action']
+          const selectedUserId = params['id'];
+                  if (selectedUserId) {
+                    this.selectedUser = this.users.find(user => user.id === +selectedUserId) as User;
+                  }
+        }
+      );
+    }
 
-    this.users.push(user1);
-    this.users.push(user2);
-  }
+    handleSuccessfulResponse(response: any) {
+      this.users = response;
+    }
+
+    viewUser(id: number) {
+        this.router.navigate(['admin','users'], {queryParams : {id, action: 'view'}});
+      }
+
+    addUser() {
+        this.selectedUser = new User();
+        this.router.navigate(['admin', 'users'], { queryParams: { action: 'add' } });
+      }
 
 }

@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../model/User';
+import { User } from 'src/app/model/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  constructor(
-    private httpClient:HttpClient
-  ) {
-     }
+  constructor(private httpClient:HttpClient) {}
 
-     getUsers()
-  {
-    return this.httpClient.get<User[]>('http://localhost:8080/users/get');
+  getUsers(){
+   return this.httpClient.get<User[]>('http://localhost:8080/users/get');
   }
+
+  addUser(newUser: User) {
+   return this.httpClient.post<User>('http://localhost:8080/users/add', newUser);
+   }
+
+   deleteUser(id: number) {
+       return this.httpClient.delete<User>('http://localhost:8080/users/' + id);
+     }
 }
