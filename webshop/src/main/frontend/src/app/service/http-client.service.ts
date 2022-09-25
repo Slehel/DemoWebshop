@@ -7,13 +7,13 @@ import { User } from 'src/app/model/user';
 })
 export class HttpClientService {
 
-  constructor(
-    private httpClient:HttpClient
-  ) {
-     }
+  constructor(private httpClient:HttpClient) {}
 
-     getUsers()
-  {
-    return this.httpClient.get<User[]>('http://localhost:8080/users/get');
+  getUsers(){
+   return this.httpClient.get<User[]>('http://localhost:8080/users/get');
   }
+
+  addUser(newUser: User) {
+   return this.httpClient.post<User>('http://localhost:8080/users/add', newUser);
+   }
 }
