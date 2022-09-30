@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/model/user';
+import { Product } from '../model/Product';
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,4 +22,17 @@ export class HttpClientService {
    deleteUser(id: number) {
        return this.httpClient.delete<User>('http://localhost:8080/users/' + id);
      }
+
+    getProducts() {
+      return this.httpClient.get<Product[]>('http://localhost:8080/products/get');
+      }
+    addProduct(newProduct: Product) {
+        return this.httpClient.post<Product>('http://localhost:8080/products/add', newProduct);
+      }
+    deleteProduct(id: number) {
+        return this.httpClient.delete<Product>('http://localhost:8080/products/' + id);
+      }
+    updateProduct(updatedProduct: Product) {
+        return this.httpClient.put<Product>('http://localhost:8080/products/update', updatedProduct);
+      }
 }

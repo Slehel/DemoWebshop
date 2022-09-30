@@ -1,6 +1,6 @@
 package com.example.webshop;
 
-import com.example.webshop.product.Product;
+import com.example.webshop.model.Product;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
