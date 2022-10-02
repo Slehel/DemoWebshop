@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -24,6 +24,16 @@ public class User {
 
     @Column(name = "type")
     private String type;
+
+    public User() {
+    }
+
+    public User(Long id, String username, String password, String type) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.type = type;
+    }
 
     public Long getId() {
         return id;
@@ -57,4 +67,15 @@ public class User {
         this.password = password;
     }
 
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

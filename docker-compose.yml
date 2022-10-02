@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  backendspring:
+    image: 'slehel/springappdocker:latest'
+    build:
+      context: .
+    container_name: backendspring
+    depends_on:
+      - postgresproductdb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresproductdb:5432/product
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - 8080:8080
+
+  postgresproductdb:
+    image: 'postgres'
+    container_name: postgresproductdb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - 5432:5432
+
+  frontendangular:
+    image: 'slehel/angular-app'
+    container_name: frontendangular
+    ports:
+      - 4200:80
+    depends_on:
+      - backendspring
