@@ -63,6 +63,9 @@ cartProducts: any;
       }
     }
 
+
+
+
 addToCart(productId: any) {
     //retrieve product from products array using the product id
     let product = this.products.find(product => {
@@ -71,7 +74,7 @@ addToCart(productId: any) {
     let cartData = [];
     //retrieve cart data from localstorage
     let data = localStorage.getItem('cart');
-    //prse it to json
+    //parse it to json
     if (data !== null) {
       cartData = JSON.parse(data);
     }
@@ -81,8 +84,6 @@ addToCart(productId: any) {
     this.updateCartData(cartData);
     //save the updated cart data in localstorage
     localStorage.setItem('cart', JSON.stringify(cartData));
-    //make the isAdded field of the product added to cart as true
-    //product.isAdded = true;
   }
 
   updateCartData(cartData: any) {

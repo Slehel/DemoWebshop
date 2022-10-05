@@ -1,5 +1,9 @@
 version: '3'
 
+networks:
+  app-tier:
+    driver: bridge
+
 services:
   backendspring:
     image: 'slehel/springappdocker:latest'
@@ -8,11 +12,17 @@ services:
     container_name: backendspring
     depends_on:
       - postgresproductdb
+    networks:
+      - app-tier
+
+
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresproductdb:5432/product
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - MINIO_SERVER_ACCESS_KEY=minio-access-key
+      - MINIO_SERVER_SECRET_KEY=minio-secret-key
     ports:
       - 8080:8080
 
@@ -32,3 +42,26 @@ services:
       - 4200:80
     depends_on:
       - backendspring
+    networks:
+      - app-tier
+    environment:
+      - MINIO_SERVER_ACCESS_KEY=minio-access-key
+      - MINIO_SERVER_SECRET_KEY=minio-secret-key
+
+
+  miniowebshop:
+      image: quay.io/minio/minio
+      container_name: miniowebshop
+      command: server --console-address ":9090" /home/shared
+      ports:
+        - 9000:9000
+        - 9090:9090
+      environment:
+       MINIO_ROOT_USER: minioadmin
+       MINIO_ROOT_PASSWORD: minioadmin
+      networks:
+        - app-tier
+      depends_on:
+        - frontendangular
+
+
