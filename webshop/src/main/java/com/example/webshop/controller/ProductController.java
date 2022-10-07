@@ -1,6 +1,9 @@
 package com.example.webshop.controller;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.webshop.db.ProductRepository;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.webshop.db.ProductRepository;
 import com.example.webshop.model.Product;
+import com.example.webshop.service.ProductService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -29,10 +33,21 @@ public class ProductController {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/get")
     public List<Product> getProducts() {
         return productRepository.findAll();
+    }
+
+    @GetMapping("/get/{id}")
+    public List<Product> getProduct(@PathVariable("id") long id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+        Product product = productRepository.getOne(id);
+        product.setPicByte(productService.getImage(product.getName()));
+        List<Product> products = new ArrayList<>();
+        products.add(product);
+        return products;
     }
 
     @PostMapping("/upload")
@@ -41,13 +56,10 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public void createProduct(@RequestBody Product product) throws IOException {
-       // product.setPicByte(this.bytes);
+    public void createProduct(@RequestBody Product product) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+        product.setPicByte(productService.getImage(product.getName()));
         productRepository.save(product);
-      //  this.bytes = null;
     }
-
-    //legutobbi 2n lehet valtoztatni kell
 
     @PutMapping("/update")
     public void updateProduct(@RequestBody Product product) {
