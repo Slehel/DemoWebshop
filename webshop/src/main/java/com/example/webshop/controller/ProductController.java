@@ -25,7 +25,7 @@ import com.example.webshop.model.Product;
 import com.example.webshop.service.ProductService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping(path = "products")
 public class ProductController {
 
@@ -44,7 +44,7 @@ public class ProductController {
     @GetMapping("/get/{id}")
     public List<Product> getProduct(@PathVariable("id") long id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         Product product = productRepository.getOne(id);
-        product.setPicByte(productService.getImage(product.getName()));
+        //product.setPicByte(productService.getImage(product.getName()));
         List<Product> products = new ArrayList<>();
         products.add(product);
         return products;
@@ -54,7 +54,6 @@ public class ProductController {
     public void uploadImage(@RequestParam("imageFile") MultipartFile file) throws IOException {
         this.bytes = file.getBytes();
     }
-
     @PostMapping("/add")
     public void createProduct(@RequestBody Product product) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         product.setPicByte(productService.getImage(product.getName()));

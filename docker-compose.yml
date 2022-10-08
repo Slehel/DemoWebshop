@@ -36,7 +36,7 @@ services:
       - 5432:5432
 
   frontendangular:
-    image: 'slehel/angular-app'
+    image: 'slehel/angular-app:newlatest'
     container_name: frontendangular
     ports:
       - 4200:80

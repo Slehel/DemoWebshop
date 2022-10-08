@@ -13,6 +13,8 @@ import io.minio.http.Method;
 import org.apache.tomcat.jni.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +36,7 @@ public class ProductService {
             /* play.min.io for test and development. */
             MinioClient minioClient =
                     MinioClient.builder()
-                            .endpoint("http://localhost:9000")
+                            .endpoint("http://miniowebshop:9000")
                             .credentials("minioadmin", "minioadmin")
                             .build();
             String url =
