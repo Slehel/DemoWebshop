@@ -84,6 +84,8 @@ addToCart(productId: any) {
     this.updateCartData(cartData);
     //save the updated cart data in localstorage
     localStorage.setItem('cart', JSON.stringify(cartData));
+    console. log(cartData); // Logs output to dev tools console.
+    alert(cartData); // Displays output using window.alert()
   }
 
   updateCartData(cartData: any) {
