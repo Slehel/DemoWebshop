@@ -13,7 +13,6 @@ import org.springframework.jms.core.JmsTemplate;
 @Configuration
 @EnableJms
 public class SpringActiveMQConfig {
-    @Value("${activemq.broker.url}")
     private String brokerUrl;
 
     @Bean
@@ -25,7 +24,7 @@ public class SpringActiveMQConfig {
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
        // activeMQConnectionFactory.setBrokerURL(brokerUrl);
-        activeMQConnectionFactory.setBrokerURL("tcp://localhost:61616");
+        activeMQConnectionFactory.setBrokerURL("tcp://activemq:61616");
         activeMQConnectionFactory.setUserName("admin");
         activeMQConnectionFactory.setPassword("admin");
         return activeMQConnectionFactory;
