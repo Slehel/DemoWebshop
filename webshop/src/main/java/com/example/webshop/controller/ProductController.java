@@ -59,10 +59,10 @@ public class ProductController {
         product.setPicByte(productService.getImage(product.getName()));
         productRepository.save(product);
     }
-    @PostMapping("/cartdata")
-    public void createCart(@RequestBody List<Product> product) throws IOException {
-
-    }
+//    @PostMapping("/cart")
+//    public void createCart(@RequestBody ArrayList<Product> cart) throws IOException {
+//
+//    }
 
     @PutMapping("/update")
     public void updateProduct(@RequestBody Product product) {

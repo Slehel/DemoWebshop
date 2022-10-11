@@ -92,8 +92,9 @@ addToCart(productId: any) {
     this.cartProducts = cartData;
   }
 
-  goToCart() {
-    this.router.navigate(['/cart']);
+  buyCart() {
+    this.httpClientService.sendCart(this.cartProducts);
+    this.emptyCart();
   }
 
   emptyCart() {

@@ -24,7 +24,10 @@ public class SpringActiveMQConfig {
     @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
-        activeMQConnectionFactory.setBrokerURL(brokerUrl);
+       // activeMQConnectionFactory.setBrokerURL(brokerUrl);
+        activeMQConnectionFactory.setBrokerURL("tcp://localhost:61616");
+        activeMQConnectionFactory.setUserName("admin");
+        activeMQConnectionFactory.setPassword("admin");
         return activeMQConnectionFactory;
     }
 

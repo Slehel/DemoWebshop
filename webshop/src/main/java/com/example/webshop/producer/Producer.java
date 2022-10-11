@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.webshop.model.Product;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/produce")
 public class Producer {
@@ -22,17 +25,22 @@ public class Producer {
     @Autowired
     private Queue queue;
 
+    @PostMapping("/cart")
+    public void createCart(@RequestBody ArrayList<Product> cart) throws IOException {
+
+    }
+
     @PostMapping("/message")
-    public Product sendMessage(@RequestBody Product product) {
+    public ArrayList<Product> sendMessage(@RequestBody ArrayList<Product> cart) {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
-            String productAsJson = mapper.writeValueAsString(product);
+            String productAsJson = mapper.writeValueAsString(cart);
 
             jmsTemplate.convertAndSend(queue, productAsJson);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return product;
+        return cart;
     }
 }

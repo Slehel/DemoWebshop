@@ -35,4 +35,7 @@ export class HttpClientService {
     updateProduct(updatedProduct: Product) {
         return this.httpClient.put<Product>('http://localhost:8080/products/update', updatedProduct);
       }
+    sendCart(cart : Product[]) {
+          return this.httpClient.post<Product[]>('http://localhost:8080/produce/message', cart);
+          }
 }
