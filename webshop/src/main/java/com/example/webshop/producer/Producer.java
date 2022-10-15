@@ -2,6 +2,9 @@ package com.example.webshop.producer;
 
 import javax.jms.Queue;
 
+import com.example.webshop.consumer.Consumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,9 @@ import java.util.ArrayList;
 @RequestMapping("/produce")
 public class Producer {
 
+    private static final Logger logger = LoggerFactory.getLogger(Producer.class);
+
+
     @Autowired
     private JmsTemplate jmsTemplate;
 
@@ -34,6 +40,7 @@ public class Producer {
     public ArrayList<Product> sendMessage(@RequestBody ArrayList<Product> cart) {
 
         try {
+            logger.info("Message received");
             ObjectMapper mapper = new ObjectMapper();
             String productAsJson = mapper.writeValueAsString(cart);
 

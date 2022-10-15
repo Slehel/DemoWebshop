@@ -94,6 +94,7 @@ addToCart(productId: any) {
 
   buyCart() {
     this.httpClientService.sendCart(this.cartProducts);
+    console. log("works!"); // Logs output to dev tools console.
     this.emptyCart();
   }
 

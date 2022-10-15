@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.example.webshop.db.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,8 @@ import com.example.webshop.db.ProductRepository;
 import com.example.webshop.model.Product;
 import com.example.webshop.service.ProductService;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "products")
@@ -37,42 +40,33 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/get")
-    public List<Product> getProducts() {
-        return productRepository.findAll();
+    @RolesAllowed({"User","Admin"})
+    public ResponseEntity<List<Product>> getProducts() {
+        return ResponseEntity.ok(productRepository.findAll());
     }
 
-    @GetMapping("/get/{id}")
-    public List<Product> getProduct(@PathVariable("id") long id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        Product product = productRepository.getOne(id);
-        //product.setPicByte(productService.getImage(product.getName()));
-        List<Product> products = new ArrayList<>();
-        products.add(product);
-        return products;
-    }
 
-    @PostMapping("/upload")
-    public void uploadImage(@RequestParam("imageFile") MultipartFile file) throws IOException {
-        this.bytes = file.getBytes();
-    }
+
+
     @PostMapping("/add")
-    public void createProduct(@RequestBody Product product) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+    @RolesAllowed("Admin")
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         product.setPicByte(productService.getImage(product.getName()));
-        productRepository.save(product);
+        return ResponseEntity.ok(productRepository.save(product));
+
     }
-//    @PostMapping("/cart")
-//    public void createCart(@RequestBody ArrayList<Product> cart) throws IOException {
-//
-//    }
 
     @PutMapping("/update")
-    public void updateProduct(@RequestBody Product product) {
-        productRepository.save(product);
+    @RolesAllowed("Admin")
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+      return  ResponseEntity.ok(productRepository.save(product));
     }
 
     @DeleteMapping(path = { "/{id}" })
-    public Product deleteProduct(@PathVariable("id") long id) {
+    @RolesAllowed("Admin")
+    public ResponseEntity<Product> deleteProduct(@PathVariable("id") long id) {
         Product product = productRepository.getOne(id);
         productRepository.deleteById(id);
-        return product;
+        return  ResponseEntity.ok(product);
     }
 }
