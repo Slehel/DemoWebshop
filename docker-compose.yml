@@ -27,8 +27,6 @@ services:
   postgresproductdb:
     image: 'postgres'
     container_name: postgresproductdb
-    networks:
-      - app-tier
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
