@@ -31,11 +31,6 @@ public class Producer {
     @Autowired
     private Queue queue;
 
-    @PostMapping("/cart")
-    public void createCart(@RequestBody ArrayList<Product> cart) throws IOException {
-
-    }
-
     @PostMapping("/message")
     public ArrayList<Product> sendMessage(@RequestBody ArrayList<Product> cart) {
 
