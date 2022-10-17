@@ -6,7 +6,7 @@ networks:
 
 services:
   backendspring:
-    image: 'slehel/springappdocker:latest'
+    image: 'slehel/springappdocker:newlatest'
     build:
       context: .
     container_name: backendspring
@@ -14,21 +14,21 @@ services:
       - postgresproductdb
     networks:
       - app-tier
-
-
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresproductdb:5432/product
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - MINIO_SERVER_ACCESS_KEY=minio-access-key
-      - MINIO_SERVER_SECRET_KEY=minio-secret-key
+      - MINIO_SERVER_ACCESS_KEY=minioadmin
+      - MINIO_SERVER_SECRET_KEY=minioadmin
     ports:
       - 8080:8080
 
   postgresproductdb:
     image: 'postgres'
     container_name: postgresproductdb
+    networks:
+      - app-tier
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
@@ -38,7 +38,7 @@ services:
       - app-tier
 
   frontendangular:
-    image: 'slehel/angular-app'
+    image: 'slehel/angular-app:newlatest'
     container_name: frontendangular
     ports:
       - 4200:80
@@ -47,8 +47,8 @@ services:
     networks:
       - app-tier
     environment:
-      - MINIO_SERVER_ACCESS_KEY=minio-access-key
-      - MINIO_SERVER_SECRET_KEY=minio-secret-key
+      - MINIO_SERVER_ACCESS_KEY=minioadmin
+      - MINIO_SERVER_SECRET_KEY=minioadmin
 
 
   miniowebshop:
@@ -59,8 +59,11 @@ services:
         - 9000:9000
         - 9090:9090
       environment:
+       MINIO_ACCESS_KEY: minioadmin
+       MINIO_SECRET_KEY: minioadmin
        MINIO_ROOT_USER: minioadmin
        MINIO_ROOT_PASSWORD: minioadmin
+       MINIO_SERVER_URL: http://localhost:9000
       networks:
         - app-tier
       depends_on:
